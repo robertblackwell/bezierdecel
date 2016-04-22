@@ -9,7 +9,5 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bezier-curve": "^1.0.0",
-    "cardinal-spline-js": "^2.3.4"
   }
 }
