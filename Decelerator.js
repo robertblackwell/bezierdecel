@@ -162,7 +162,7 @@
 	
 	}
 
-	module.exports={
+	module.exports =  {
 		plain: QuadraticBezierDecelerator,
 		osd : OSD
 	}
