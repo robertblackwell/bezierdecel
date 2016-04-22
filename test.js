@@ -1,3 +1,4 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var bezier = require('bezier-curve');
 
 var overshoot = function(x, amplitude, period, stretch, decay)
@@ -111,9 +112,6 @@ var QuadraticBezierDecelerator = function(options)
 		
 }
 
-//
-// Bezier deceleration with overshoot oscillation
-//
 var OSD = function(options)
 {
 	var os_value = 140;
@@ -145,3 +143,79 @@ module.exports=exports={
 	plain: QuadraticBezierDecelerator,
 	osd : OSD
 }
+
+},{"bezier-curve":2}],2:[function(require,module,exports){
+
+
+function interpolate(t, p) {
+  var order = p.length - 1; // curve order is number of control point - 1
+  var d = p[0].length;      // control point dimensionality
+
+  // create a source vector array copy that will be
+  // used to store intermediate results
+  var v = p.map(function(point) {
+    return point.slice();
+  });
+
+  // for each order reduce the control point array by updating
+  // each control point with its linear interpolation to the next
+  for(var i=order; i>0; i--) {
+    for(var j=0; j<order; j++) {
+      // interpolate each component
+      for(k=0; k<d; k++) {
+        v[j][k] = (1 - t) * v[j][k] + t * v[j+1][k];
+      }
+    }
+  }
+
+  return v[0];
+}
+
+
+module.exports = interpolate;
+},{}],3:[function(require,module,exports){
+var Decelerator = require("./Decelerator")
+
+		var points_A = [
+		  [0.0,  0.0],
+		  [1530.0/18.0,  1530.0],
+		  [240.0, 1530],
+		  ];
+		var points_B = [
+		  [0.0,  0.0],
+		  [1530.0/36.0,  1530.0/2.0],
+		  [240.0, 1530],
+		  ];
+		var points = points_B
+
+		var decelerator_options= {
+			number_of_frames : 240,
+			total_rotation_required : 1530,
+			initial_velocity : 18 , // degrees per frame
+			alpha : 0.5,
+			over : false
+		}
+
+
+		var decel_1 = new Decelerator.plain(decelerator_options);
+// 		
+// 		decelerator_options.alpha = .75;		
+// 		var decel_2 = new Decelerator(decelerator_options);
+
+// 		decelerator_options.alpha = .95;	
+// 		decelerator_options.over = true;	
+			
+		var decel_3 = new Decelerator.osd(decelerator_options);
+
+		var i;
+		var my_data = [["x","no overshoot", "overshoot"]];
+		for(i = 0; i <= 240; i++){
+			var y1 = decel_1.evaluate(i);
+// 			var y2 = decel_2.evaluate(i);
+			var y3 = decel_3.evaluate(i);
+// 			my_data[i+1] = [i, y1, y2,y3];	
+			my_data[i+1] = [i, y1, y3];
+		}
+
+	console.log(my_data)
+},{"./Decelerator":1}]},{},[3]);

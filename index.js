@@ -47,7 +47,7 @@ var decelerator_options= {
 }
 
 
-var decel = new Decelerator(decelerator_options);
+var decel = new Decelerator.plain(decelerator_options);
 
 var i;
 for(i = 0; i <= 240; i++)	
