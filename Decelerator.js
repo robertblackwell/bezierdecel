@@ -1,4 +1,4 @@
-function(exports){
+(function(exports){
 	function bezier(t, p) {
 	  var order = p.length - 1; // curve order is number of control point - 1
 	  var d = p[0].length;      // control point dimensionality
@@ -167,4 +167,4 @@ function(exports){
 		osd : OSD
 	}
 
-}(typeof exports === 'undefined'? this['Decelerator']={}: exports)
+})(typeof exports === 'undefined'? this['Decelerator']={}: exports)
