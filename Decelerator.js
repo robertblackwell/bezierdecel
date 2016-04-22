@@ -2,7 +2,7 @@
 	/**
 	* Compute a parametric bezier curve (parameter t) for the given array of control points p
 	*/
-	function bezier(t, p) {
+	function Bezier(t, p) {
 	  var order = p.length - 1; // curve order is number of control point - 1
 	  var d = p[0].length;      // control point dimensionality
 
@@ -30,7 +30,7 @@
 	* Computes an exponentially decaying cosine curve to simulate "overshoot"
 	* Assumes x starts at 0.0
 	*/
-	var overshoot = function(x, amplitude, period, stretch, decay)
+	var Overshoot = function(x, amplitude, period, stretch, decay)
 	{
 		var c = Math.cos((2*Math.PI/(period*1.0))*x)
 		var p = amplitude*c;
@@ -105,7 +105,7 @@
 		* time. We have to calculate a table of [t, f(t)] values
 		*/
 		for(var t=0; t<=opt.number_of_frames; t++) {
-		  var point = bezier(t/(opt.number_of_frames*1.0), this.control_points);
+		  var point = Bezier(t/(opt.number_of_frames*1.0), this.control_points);
 		  this.value_points[t] = point;
 		}
 	
@@ -138,10 +138,8 @@
 			*
 			*/
 			var y = ((vp[i][1] - vp[i-1][1])/( vp[i][0]-vp[i-1][0]))*(x-vp[i-1][0]) + vp[i-1][1]
-	
 			return y;
 		}
-		
 	}
 
 	//
@@ -167,8 +165,7 @@
 			if( x < opt.number_of_frames )
 				return decel.evaluate(x);
 			else{
-	// 					return 1600.0;
-				var y = opt.total_rotation_required - os_value + overshoot(x - opt.number_of_frames, os_value, os_period, 1, -1)	
+				var y = opt.total_rotation_required - os_value + Overshoot(x - opt.number_of_frames, os_value, os_period, 1, -1)	
 				return y;
 			}
 		}
