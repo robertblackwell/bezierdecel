@@ -1,4 +1,7 @@
 
+	/**
+	* Compute a parametric bezier curve (parameter t) for the given array of control points p
+	*/
 	function bezier(t, p) {
 	  var order = p.length - 1; // curve order is number of control point - 1
 	  var d = p[0].length;      // control point dimensionality
@@ -23,6 +26,10 @@
 	  return v[0];
 	}
 
+	/**
+	* Computes an exponentially decaying cosine curve to simulate "overshoot"
+	* Assumes x starts at 0.0
+	*/
 	var overshoot = function(x, amplitude, period, stretch, decay)
 	{
 		var c = Math.cos((2*Math.PI/(period*1.0))*x)
@@ -80,6 +87,9 @@
 	*	where ALPHA is between zero and 1.0
 	*/
 
+	/**
+	* Computes a 3 control point bezier curve as the displacement function
+	*/
 	var QuadraticBezierDecelerator = function(options)
 	{
 		var opt = options;
@@ -139,15 +149,18 @@
 	//
 	var OSD = function(options)
 	{
-		var os_value = 140;
-		var os_length = 85;
-		var os_period = 20;
+
+		var os_value = options.os_value;
+		var os_length = options.os_length;
+		var os_period = options.os_period;
+		
 		var opt = {};
 		opt.over=false;
 		opt.initial_velocity = options.initial_velocity;
 		opt.number_of_frames = options.number_of_frames - os_length;
 		opt.total_rotation_required = options.total_rotation_required + os_value;
 		opt.alpha = 1.0;
+
 		var decel = new QuadraticBezierDecelerator(opt);
 		this.evaluate = function(x)
 		{
