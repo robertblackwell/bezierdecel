@@ -1,12 +1,12 @@
 {
-  "name": "interpolate",
+  "name": "decelerator",
   "version": "1.0.0",
-  "description": "",
+  "description": "Provides a couple of deceleration function with known starting velocity",
   "main": "Decelerator.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Robert Blackwell",
   "license": "ISC",
   "dependencies": {
   }
